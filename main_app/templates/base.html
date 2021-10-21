@@ -17,8 +17,9 @@
           <li><a href="/" class="left brand-logo">&nbsp;&nbsp;FishCollector</a></li>
         </ul>
         <ul class="right">
-          <li><a href="/about">About</a></li>
-          <li><a href="/fishes">View All My Fishes</a></li>
+          <li><a href="{% url 'about' %}">About</a></li>
+          <li><a href="{% url 'fishes_create' %}">Add a Fish</a></li>
+          <li><a href="{% url 'index' %}">View All My Fishes</a></li>
         </ul>
       </div>
     </nav>
