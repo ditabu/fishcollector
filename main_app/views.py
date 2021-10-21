@@ -1,17 +1,17 @@
 from django.shortcuts import render, redirect
 # Add the following import
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .models import Fish
+from django.views.generic import ListView, DetailView
+from .models import Fish, Toy
 from .forms import FeedingForm
 
 # Create your views here.
 # Add the following import
-from django.http import HttpResponse
+
 
 class FishCreate(CreateView):
     model = Fish
-    fields = '__all__'
-    success_url = '/fishes/'
+    fields = ['name', 'breed', 'description', 'age']
 
 class FishUpdate(UpdateView):
     model = Fish
@@ -20,12 +20,12 @@ class FishUpdate(UpdateView):
 
 class FishDelete(DeleteView):
     model = Fish
-    success_url = 'fishes/'
+    success_url = '/fishes/'
 
 
 # Define the home view
 def home(request):
-    return HttpResponse('<h1>Hello /ᐠ｡‸｡ᐟ\ﾉ</h1>')
+      return render(request, 'home.html')
 
 def about(request):
     return render(request, 'about.html')
@@ -53,3 +53,21 @@ def add_feeding(request, fish_id):
         new_feeding.fish_id = fish_id
         new_feeding.save()
     return redirect('detail', fish_id=fish_id)
+
+class ToyList(ListView):
+      model = Toy
+
+class ToyDetail(DetailView):
+  model = Toy
+
+class ToyCreate(CreateView):
+  model = Toy
+  fields = '__all__'
+
+class ToyUpdate(UpdateView):
+  model = Toy
+  fields = ['name', 'color']
+
+class ToyDelete(DeleteView):
+  model = Toy
+  success_url = '/toys/'
