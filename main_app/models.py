@@ -14,8 +14,15 @@ class Fish(models.Model):
     description = models.TextField(max_length=250)
     age = models.IntegerField()
 
+    def __str__(self):
+        return self.name
+
+    # Add this method
+    def get_absolute_url(self):
+        return reverse('detail', kwargs={'fish_id': self.id})
+    
 class Feeding(models.Model):
-    date = models.DateField()
+    date = models.DateField('feeding date')
     meal = models.CharField(
         max_length=1,
         # add the 'choices' field option
@@ -23,11 +30,12 @@ class Feeding(models.Model):
         # set the default value for meal to be 'B'
         default=MEALS[0][0]
         )
-
-def __str__(self):
-    return self.name
-
-# Add this method
-def get_absolute_url(self):
-    return reverse('detail', kwargs={'fish_id': self.id})
     
+    fish = models.ForeignKey(Fish, on_delete=models.CASCADE)
+
+    def __str__(self):
+        # Nice method for obtaining the friendly value of a Field.choice
+        return f"{self.get_meal_display()} on {self.date}"
+
+    class Meta:
+        ordering = ['-date']
