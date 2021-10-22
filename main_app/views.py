@@ -37,10 +37,19 @@ def fishes_index(request):
 
 def fishes_detail(request, fish_id):
     fish = Fish.objects.get(id=fish_id)
+    # Get the toys the fish doesn't have
+    toys_fish_doesnt_have = Toy.objects.exclude(id__in = fish.toys.all().values_list('id'))
     feeding_form = FeedingForm()
     return render(request, 'fishes/detail.html', { 
-        'fish': fish, 'feeding_form': feeding_form 
+        'fish': fish, 'feeding_form': feeding_form,
+        # Add the toys to be displayed
+        'toys': toys_fish_doesnt_have
     })
+
+def assoc_toy(request, fish_id, toy_id):
+      # Note that you can pass a toy's id instead of the whole object
+    Fish.objects.get(id=fish_id).toys.add(toy_id)
+    return redirect('detail', fish_id=fish_id)
 
 def add_feeding(request, fish_id):
       # create a ModelForm instance using the data in request.POST
